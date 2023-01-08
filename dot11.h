@@ -35,19 +35,22 @@ struct BeaconFrame {
 
 struct FixedPrameters {
     uint64_t timeStamp;
+    uint16_t intelval;
     uint16_t capaInfo;
 } __attribute__((__packed__));
 
 struct WirelessManagment {
     struct FixedPrameters fixPrams;
-    uint8_t TagPrams[0];
+    uint8_t tagPrams[0];
 
 } __attribute__((__packed__));
 
-typedef struct Dot11 {
-    struct RadioTapHeader radioTapHeader;
-    struct BeaconFrame beaconFrame;
-    struct WirelessManagment wirelessManagment;
-} __attribute__((__packed__)) dot11;
+//typedef struct Dot11 {
+//    struct RadioTapHeader radioTapHeader;
+//    struct BeaconFrame beaconFrame;
+//    struct WirelessManagment wirelessManagment;
+//} __attribute__((__packed__)) dot11;
 
 bool parseBeaconFrame(const uint8_t *packet);
+bool printESSID(struct WirelessManagment *wireMana);
+
