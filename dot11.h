@@ -52,5 +52,7 @@ struct WirelessManagment {
 //} __attribute__((__packed__)) dot11;
 
 bool parseBeaconFrame(const uint8_t *packet);
-bool printESSID(struct WirelessManagment *wireMana);
+void printESSID(struct WirelessManagment *wireMana);
+void printchannel(struct WirelessManagment *wireMana);
+void printBSSid(struct BeaconFrame *beaconFrame);
 

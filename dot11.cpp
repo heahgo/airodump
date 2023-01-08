@@ -4,24 +4,36 @@
 #include <cstring>
 #include <netinet/in.h>
 
-bool printchannel() {}
+void printchannel(struct WirelessManagment *wireMana) {
+    int idx = 0;
+    while (true) {
+        if (wireMana->tagPrams[idx] != 3) {
+            idx += wireMana->tagPrams[idx + 1] +2;
+            continue;
+        }
+        idx += wireMana->tagPrams[idx + 1];
+        printf("CH = %d\n", wireMana->tagPrams[idx + 1]);
+        break;
+    }
+}
 
-bool printESSID(struct WirelessManagment *wireMana) {
-//    uint8_t idx = 0;
-//    while (true) {
-//        if (wireMana->tagPrams[idx] != 0) {
-//            idx += wireMana->tagPrams[idx + 1];
-//            continue;
-//        }
-//    }
-
+void printESSID(struct WirelessManagment *wireMana) {
     uint8_t ssidLen = wireMana->tagPrams[1];
     char *ssid = (char *)malloc(sizeof(char) * ssidLen);
     memcpy(ssid, &wireMana->tagPrams[2], ssidLen);
     printf("SSID = %s\n", ssid);
     free(ssid);
+}
 
-    return true;
+void printBSSid(struct BeaconFrame *beaconFrame) {
+    printf("BSS id: %02x:%02x:%02x:%02x:%02x:%02x\n\n",
+           beaconFrame->BSSId[0],
+           beaconFrame->BSSId[1],
+           beaconFrame->BSSId[2],
+           beaconFrame->BSSId[3],
+           beaconFrame->BSSId[4],
+           beaconFrame->BSSId[5]
+           );
 }
 
 bool parseBeaconFrame(const uint8_t *packet) {
@@ -33,31 +45,10 @@ bool parseBeaconFrame(const uint8_t *packet) {
     if (beaconFrame->type != ntohs(beaconType)) // This Not Beacon Frame!!
         return false;
 
+    printBSSid(beaconFrame);
     printESSID(wireMana);
-    printf("Reciver addres: %02x:%02x:%02x:%02x:%02x:%02x\n",
-           beaconFrame->recvAddr[0],
-           beaconFrame->recvAddr[1],
-           beaconFrame->recvAddr[2],
-           beaconFrame->recvAddr[3],
-           beaconFrame->recvAddr[4],
-           beaconFrame->recvAddr[5]
-           );
-    printf("Sourec Address: %02x:%02x:%02x:%02x:%02x:%02x\n",
-           beaconFrame->sourAddr[0],
-           beaconFrame->sourAddr[1],
-           beaconFrame->sourAddr[2],
-           beaconFrame->sourAddr[3],
-           beaconFrame->sourAddr[4],
-           beaconFrame->sourAddr[5]
-           );
-    printf("BSS id: %02x:%02x:%02x:%02x:%02x:%02x\n\n",
-           beaconFrame->BSSId[0],
-           beaconFrame->BSSId[1],
-           beaconFrame->BSSId[2],
-           beaconFrame->BSSId[3],
-           beaconFrame->BSSId[4],
-           beaconFrame->BSSId[5]
-           );
+    printchannel(wireMana);
+
 
     return true;
 }
