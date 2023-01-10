@@ -4,7 +4,7 @@ CONFIG -= app_bundle
 CONFIG -= qt
 LIBS += -lpcap
 
-DESTDIR=../bin
+DESTDIR=../
 
 SOURCES += \
         dot11.cpp \
