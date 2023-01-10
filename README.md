@@ -1,7 +1,7 @@
 bob11-airodump
 -----------
 ### 기능
-모니터 모드의 무선 인터페이스에 들어오는 패킷중에서 Beacon Frame의 SSID, BSSID, CH을 출력헤줌
+모니터 모드의 무선 인터페이스에 들어오는 패킷중에서 Beacon Frame의 SSID, BSSID, CH을 출력go줌
 ### 사용법
 1. qmake
 2. make
