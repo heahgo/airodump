@@ -3,7 +3,7 @@ CONFIG += console c++17
 CONFIG -= app_bundle
 CONFIG -= qt
 LIBS += -lpcap
-
+TARGET = airodump
 DESTDIR=./
 
 SOURCES += \
@@ -11,5 +11,5 @@ SOURCES += \
         airodump.cpp
 
 HEADERS += \
-    dot11.h
+        dot11.h
 
