@@ -12,21 +12,22 @@ void printchannel(struct WirelessManagment *wireMana) {
             continue;
         }
         idx += wireMana->tagPrams[idx + 1];
-        printf("CH = %d\n", wireMana->tagPrams[idx + 1]);
+        printf("CH : %d\n", wireMana->tagPrams[idx + 1]);
         break;
     }
 }
 
 void printESSID(struct WirelessManagment *wireMana) {
     uint8_t ssidLen = wireMana->tagPrams[1];
-    char *ssid = (char *)malloc(sizeof(char) * ssidLen);
+    char *ssid = (char *)malloc(sizeof(char) * ssidLen + 1);
     memcpy(ssid, &wireMana->tagPrams[2], ssidLen);
-    printf("SSID = %s\n", ssid);
+    strncat(ssid, "", 1);
+    printf("SSID : %s\n", ssid);
     free(ssid);
 }
 
 void printBSSid(struct BeaconFrame *beaconFrame) {
-    printf("BSS id: %02x:%02x:%02x:%02x:%02x:%02x\n\n",
+    printf("BSS id : %02x:%02x:%02x:%02x:%02x:%02x\n\n",
            beaconFrame->BSSId[0],
            beaconFrame->BSSId[1],
            beaconFrame->BSSId[2],
@@ -36,19 +37,16 @@ void printBSSid(struct BeaconFrame *beaconFrame) {
            );
 }
 
-bool parseBeaconFrame(const uint8_t *packet) {
-    uint8_t becaonFrameSize = 24;
+void printBeaconFrame(const uint8_t *packet) {
     struct RadioTapHeader *radioHead = (RadioTapHeader *)packet;
-    struct BeaconFrame *beaconFrame = (BeaconFrame *)(packet + radioHead->it_len);
-    struct WirelessManagment *wireMana = (WirelessManagment *)(packet + radioHead->it_len + becaonFrameSize);
+    struct BeaconFrame *beaconFrame = (BeaconFrame *)(packet + radioHead->length);
+    struct WirelessManagment *wireMana = (WirelessManagment *)(packet + radioHead->length + BEACON_FRAME_SIZE);
 
-    if (beaconFrame->type != ntohs(beaconType)) // This Not Beacon Frame!!
-        return false;
+    if (beaconFrame->type != ntohs(BEACON_TYPE)) // This Not Beacon Frame!!
+        return;
 
-    printBSSid(beaconFrame);
-    printESSID(wireMana);
     printchannel(wireMana);
+    printESSID(wireMana);
+    printBSSid(beaconFrame);
 
-
-    return true;
 }
