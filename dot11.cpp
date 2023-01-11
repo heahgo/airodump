@@ -42,7 +42,7 @@ void printBeaconFrame(const uint8_t *packet) {
     struct BeaconFrame *beaconFrame = (BeaconFrame *)(packet + radioHead->length);
     struct WirelessManagment *wireMana = (WirelessManagment *)(packet + radioHead->length + BEACON_FRAME_SIZE);
 
-    if (beaconFrame->type != ntohs(BEACON_TYPE)) // This Not Beacon Frame!!
+    if (beaconFrame->frameControl != ntohs(BEACON)) // This Not Beacon Frame!!
         return;
 
     printchannel(wireMana);

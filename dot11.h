@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#define BEACON_TYPE 0x8000
+#define BEACON 0x8000
 #define BEACON_FRAME_SIZE 24
 
 struct RadioTapHeader {
@@ -13,7 +13,7 @@ struct RadioTapHeader {
 } __attribute__((__packed__));
 
 struct BeaconFrame {
-    uint16_t type;
+    uint16_t frameControl;
     uint16_t duration;
     uint8_t recvAddr[6];
     uint8_t sourAddr[6];
